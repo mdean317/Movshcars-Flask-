@@ -1,0 +1,19 @@
+from app.extensions import db
+
+class Category(db.Model):
+    __tablename__ = 'categories'
+    category_id = db.Column(db.Integer, nullable=False, primary_key=True)
+    name = db.Column(db.String(80), nullable=False)
+    isActing = db.Column(db.Boolean, default=False, nullable=False)
+    isSong = db.Column(db.Boolean, default=False, nullable=False)
+
+    def __repr__(self):
+        return f'<Category {self.name}>'
+    
+    def to_dict(self):
+        return {
+            'category_id': self.category_id,
+            'name': self.name,
+            'isActing': self.isActing,
+            'isSong': self.isSong
+        }
