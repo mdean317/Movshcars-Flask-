@@ -7,8 +7,8 @@ def init_db_data():
         categories = [
             Category(name='Best Picture'),
             Category(name='Best Director'),
-            Category(name='Best Actor', isActing=True),
-            Category(name='Best Actress', isActing=True),
+            Category(name='Best Leading Actor', isActing=True),
+            Category(name='Best Leading Actress', isActing=True),
             Category(name='Best Supporting Actor', isActing=True),
             Category(name='Best Supporting Actress', isActing=True),
             Category(name='Best Original Song', isSong=True),

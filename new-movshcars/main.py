@@ -6,6 +6,8 @@ from app.blueprints import blueprints
 from app.init_db_data import init_db_data
 from flask_login import LoginManager
 from app.models.user import User
+from dotenv import load_dotenv
+import os
 
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -15,6 +17,13 @@ app.config['SQLALCHEMY_DATABASE_URI'] =\
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+
+load_dotenv()
+app.config['SECRET_KEY'] = os.getenv('FLASK_SECRET_KEY')
+
+if not app.secret_key:
+    raise ValueError("No FLASK_SECRET_KEY set! Please set the environment variable.")
+    
 
 for bp in blueprints:
     app.register_blueprint(bp)

@@ -33,7 +33,8 @@ def login():
         print("made it here")
         login_user(user, remember=remember)
         print("And... here?")
-        return Response(status=200)
+
+        return jsonify(user.to_dict())
     
     except Exception as error:
         print(error)

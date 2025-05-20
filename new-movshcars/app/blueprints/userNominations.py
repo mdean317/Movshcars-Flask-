@@ -5,6 +5,7 @@ from app.models.userNomination import UserNomination
 from flask_cors import CORS
 from app.models.category import Category
 from app.models.movie import Movie
+from app.models.user import User
 
 userNominations = Blueprint('userNominations', __name__, url_prefix='/usernoms')
 CORS(userNominations)
@@ -14,10 +15,12 @@ def addUserNomination():
     
     print("in add")
     try:
+
         data = request.get_json()
-        username= data['username']
-        newUserNomination = UserNomination(user_id=1, nomination_id=data['nomination_id'], didWin=data['didWin'])
-        
+        user = User.query.filter_by(username=data['username']).first()
+
+        newUserNomination = UserNomination(user_id=user.user_id, nomination_id=data['nomination_id'], didWin=data['didWin'])
+        print(newUserNomination)
         db.session.add(newUserNomination)
         db.session.commit()
         return jsonify({"message": "Movie added successfully"}), 201
@@ -31,11 +34,12 @@ def getUserNomsByYearAndCategory():
 
     year_arg= request.args.get('year', type=int)
     category_id_arg = request.args.get('category', type=int)
-    user_id_arg= request.args.get('username', type=str)
+    username = request.args.get('username', type=str)
 
+    user = User.query.filter_by(username=username).first()
     userNoms = (db.session.query(Nomination)
                 .join(UserNomination, UserNomination.nomination_id == Nomination.nomination_id)
-                .filter(UserNomination.user_id==1, Nomination.category_id == category_id_arg, Nomination.year == year_arg)
+                .filter(UserNomination.user_id==user.user_id, Nomination.category_id == category_id_arg, Nomination.year == year_arg)
                 .add_columns(UserNomination.didWin, UserNomination.user_id)
                 .all()
                 )
@@ -59,3 +63,17 @@ def getUserNomsByYearAndCategory():
 
     return jsonify(result)
  
+@userNominations.route('/delete/<userid>/<nominationid>', methods=['DELETE'])
+def deleteUserNomination(userid, nominationid):
+    try:
+
+        nomToDelete = UserNomination.query.filter_by(user_id=userid, nomination_id=nominationid).first()
+        
+        if nomToDelete:
+            db.session.delete(nomToDelete)
+            db.session.commit()
+            return jsonify({"message": "Movie deleted successfully"}), 200
+
+    except Exception as error:
+        db.session.rollback()
+        return jsonify({"error": str(error)}), 500

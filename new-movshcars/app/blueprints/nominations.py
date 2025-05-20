@@ -5,6 +5,7 @@ from app.models.nomination import Nomination
 from app.models.userNomination import UserNomination
 from app.models.movie import Movie
 from app.models.category import Category
+from app.models.user import User
 from flask_cors import CORS
 
 nominations = Blueprint('nominations', __name__, url_prefix='/noms')
@@ -24,10 +25,12 @@ def addNomination():
         db.session.add(newNomination)
         db.session.commit()        
 
-        user = data['user']
+        email = data['email']
+
+        user = User.query.filter_by(email=email).first()
         print(newNomination)
 
-        newUserNomination = UserNomination(user_id=1, nomination_id=newNomination.nomination_id, didWin=False)
+        newUserNomination = UserNomination(user_id=user.user_id, nomination_id=newNomination.nomination_id, didWin=False)
 
         print(newUserNomination)
 
@@ -55,11 +58,6 @@ def getNomsByYearAndCategory():
 
     for nom in nomBank:
 
-        #count = db.session.query(func.count(UserNomination.nomination_id)
-         #                       .filter(UserNomination.nomination_id == nom.nomination_id)
-          #                      .all())
-        
-        #print (count) 
         movieObj = db.session.get(Movie, nom.movie_id)
         categoryObj = db.session.get(Category, nom.category_id)
         
@@ -70,8 +68,8 @@ def getNomsByYearAndCategory():
             'category': categoryObj.to_dict(),
             'movie': movieObj.to_dict(),
             'nominee': nom.nominee,
-            'user': '1',
-            'didWin': False
+            'didWin': False,
+            'votes': nom.votes
         })
 
     return jsonify(result)

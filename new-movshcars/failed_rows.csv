@@ -1,0 +1,8 @@
+Year,Category,Film,FilmId,Winner,Nominees,Song,error
+1934,Best Adapted Screenplay,The Thin Man,tt0025878,,"Frances Goodrich, Albert Hackett",,"(sqlite3.OperationalError) no such column: nominations.created_at
+[SQL: SELECT nominations.nomination_id AS nominations_nomination_id, nominations.year AS nominations_year, nominations.category_id AS nominations_category_id, nominations.movie_id AS nominations_movie_id, nominations.nominee AS nominations_nominee, nominations.song AS nominations_song, nominations.created_at AS nominations_created_at, nominations.updated_at AS nominations_updated_at 
+FROM nominations 
+WHERE nominations.movie_id = ? AND nominations.year = ? AND nominations.category_id = ? AND nominations.nominee = ?
+ LIMIT ? OFFSET ?]
+[parameters: ('tt0025878', 1934, 9, 'Frances Goodrich, Albert Hackett', 1, 0)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)"
