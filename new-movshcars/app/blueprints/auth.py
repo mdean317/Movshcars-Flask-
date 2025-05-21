@@ -84,3 +84,6 @@ def logout():
     except Exception as error:
         return jsonify({'error': str(error)}), 500
 
+@auth.route("/ping")
+def ping():
+    return "pong", 200
