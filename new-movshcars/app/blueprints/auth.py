@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, url_for, request, jsonify, Response
+from flask import Blueprint, request, jsonify, Response
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.extensions import db
 from flask_cors import CORS

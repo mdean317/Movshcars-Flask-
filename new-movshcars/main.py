@@ -7,7 +7,7 @@ from app.init_db_data import init_db_data
 from flask_login import LoginManager
 from app.models.user import User
 from dotenv import load_dotenv
-import os
+
 
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -43,4 +43,4 @@ with app.app_context():
         init_db_data()   
 
 if __name__ == '__main__':
-        app.run(debug=True)
+        app.run(host='0.0.0.0', port=5000, debug=True)
