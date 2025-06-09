@@ -1,6 +1,8 @@
 from app.extensions import db
 from app.models import Category
 
+# This file should initiate any necessary data when creating the db. 
+# This sets up the nomination categories 
 def init_db_data():
     if not Category.query.first():  
         print("Seeding categories...")
