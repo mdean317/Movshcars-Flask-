@@ -8,3 +8,4 @@ requests
 Flask-UUID
 
 Dependecies for Frontend: 
+react-hot-toast
